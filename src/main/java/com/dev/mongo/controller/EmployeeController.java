@@ -7,6 +7,7 @@ import com.dev.mongo.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +22,9 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/employee")
-    public ResponseEntity<String> addEmployee(@RequestBody EmployeeRequest employee) {
-        employeeService.addNewEmployee(employee);
-        return ResponseEntity.ok("Success");
+    public ResponseEntity<String> addOrUpdateEmployee(@RequestBody EmployeeRequest employee) {
+        employeeService.addOrUpdateEmployee(employee);
+        return ResponseEntity.ok("Added Employee :" + employee.getEmployeeId());
     }
 
     @GetMapping("/employee/{userId}")
@@ -31,6 +32,12 @@ public class EmployeeController {
         Employee employee = employeeService.searchEmployeeById(employeeId);
         EmployeeResponse response = toResponse(employee);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/employee/{userId}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable String employeeId) {
+        employeeService.deleteEmployeeById(employeeId);
+        return ResponseEntity.ok("Employee :" + employeeId + " removed");
     }
 
     private EmployeeResponse toResponse(Employee employee) {

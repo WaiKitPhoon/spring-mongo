@@ -12,18 +12,13 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void addNewEmployee(EmployeeRequest request) {
+    public void addOrUpdateEmployee(EmployeeRequest request) {
         Employee employee = toEmployee(request);
         employeeRepository.save(employee);
     }
 
     public Employee searchEmployeeById(String employeeId) {
         return employeeRepository.findById(employeeId).orElse(new Employee());
-    }
-
-    public Employee updateEmployee(Employee employee) {
-        employeeRepository.save(employee);
-        return employeeRepository.findById(employee.getEmployeeId()).orElse(new Employee());
     }
 
     public void deleteEmployeeById(String employeeId) {
